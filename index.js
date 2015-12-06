@@ -22,42 +22,25 @@ var resourceTypeMap = {
 }
 
 function buildArn(resource, accountId) {
-    var physicalResource = resource.PhysicalResourceId;
+    var physicalResourceId = resource.PhysicalResourceId;
     var parts = resource.ResourceType.split('::');
     var service = parts[1].toLowerCase();
     var resourceType = parts[2].toLowerCase();
     var region = AWS.config.region;
+
     if (resourceTypeMap[resource.ResourceType]) {
         service = resourceTypeMap[resource.ResourceType].service;
         resourceType = resourceTypeMap[resource.ResourceType].resourceType;
     }
 
     switch (service) {
-        case 'iam': return ['arn:aws:iam', accountId, resourceType, physicalResource].join(':')
-        default: return ['arn:aws', service, region, accountId, resourceType, physicalResource].join(':');
+        case 'iam': return ['arn:aws:iam:', accountId, resourceType + '/' + physicalResourceId].join(':');
+        case 'lambda', 'elasticache', 'es', 'redshift', 'rds': return ['arn:aws', service, region, accountId, resourceType, physicalResourceId ].join(':');
+        case 's3': return 'arn:aws:s3:::' + physicalResourceId;
+        default: return ['arn:aws', service, region, accountId, (resourceType + '/' +  physicalResourceId)].join(':');
     }
 
     return physicalResource;
-}
-
-function getResourceMap(stack, accountId) {
-    return new Promise(function(success, fail) {        
-        cloudFormation.listStackResources({
-            StackName: stack
-        }, function(err, data) {
-            if (err) {
-                return fail(err);
-            }
-            var resources = {};
-            data.StackResourceSummaries.forEach(function(resource, idx) {
-                var arn = buildArn(resource, accountId);
-                if (arn.length > 0) {
-                    resources[resource.LogicalResourceId] = arn;
-                }
-            });
-            success(resources);
-        });
-    });
 }
 
 function getAccountId() {
@@ -79,7 +62,7 @@ function loadStack(stackName, callback) {
             StackName: stack
         }, function(err, data) {
             if (err) {
-                return callback(err);
+                return callback(err.message, {});
             }
             var resources = {};
             data.StackResourceSummaries.forEach(function(resource, idx) {

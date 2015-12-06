@@ -26,5 +26,12 @@ describe('aws-cloudformation-lookup', function() {
             }
             done();     
         });
+
+        it('Returns an error for non-existing stack', function(done) {
+            cloudFormationLookup.loadStack('NONEXISTINGSTACK'+ Math.floor(Math.random() * 100000), function(err, data) {
+                expect(err).toMatch(/does not exist/);
+                done();
+            });
+        })
     });
 });
