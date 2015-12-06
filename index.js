@@ -83,7 +83,6 @@ function loadStack(stackName, callback) {
             }
             var resources = {};
             data.StackResourceSummaries.forEach(function(resource, idx) {
-                console.log(resource);
                 var arn = buildArn(resource, accountId);
                 
                 if (arn.length > 0) {
