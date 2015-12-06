@@ -1,0 +1,34 @@
+{
+  "name": "aws-cloudformation-lookup",
+  "version": "0.1.0",
+  "description": "Lookup resources from cloudformation stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js",
+    "setup": "node setup_test_env.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SC5/aws-cloudformation-lookup.git"
+  },
+  "keywords": [
+    "Cloudformation"
+  ],
+  "author": "Mikael Puittinen/SC5 Online Oy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SC5/aws-cloudformation-lookup/issues"
+  },
+  "homepage": "https://github.com/SC5/aws-cloudformation-lookup",
+  "dependencies": {
+    "aws-sdk": "2.2.21",
+    "bluebird": "^3.0.6"
+  },
+  "config": {
+    "testStackName": "awsCloudFormationLookupTest"
+  },
+  "devDependencies": {
+    "expect": "1.13.0",
+    "mocha": "2.3.4"
+  }
+}
