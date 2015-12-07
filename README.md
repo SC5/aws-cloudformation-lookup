@@ -26,6 +26,7 @@ which returns all resources from the stack with the following properties:
 
 ## Release History
 
+* 2015/12/07 - v0.1.3 - Fixes to Arns
 * 2015/12/06 - v0.1.0 - Initial version of module
 
 ## License

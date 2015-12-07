@@ -33,14 +33,24 @@ function buildArn(resource, accountId) {
         resourceType = resourceTypeMap[resource.ResourceType].resourceType;
     }
 
-    switch (service) {
-        case 'iam': return ['arn:aws:iam:', accountId, resourceType + '/' + physicalResourceId].join(':');
-        case 'lambda', 'elasticache', 'es', 'redshift', 'rds': return ['arn:aws', service, region, accountId, resourceType, physicalResourceId ].join(':');
-        case 's3': return 'arn:aws:s3:::' + physicalResourceId;
-        default: return ['arn:aws', service, region, accountId, (resourceType + '/' +  physicalResourceId)].join(':');
+    switch (service) {    
+        case 'iam': 
+            return ['arn:aws:iam:', accountId, resourceType + '/' + physicalResourceId].join(':');
+            break;
+        case 'lambda':
+        case 'elasticache':
+        case 'es': 
+        case 'redshift':
+        case 'rds': 
+            return ['arn:aws', service, region, accountId, resourceType, physicalResourceId ].join(':');
+            break;
+        case 's3': 
+            return 'arn:aws:s3:::' + physicalResourceId;
+            break;
+        default: 
+            return ['arn:aws', service, region, accountId, (resourceType + '/' +  physicalResourceId)].join(':');
+            break;
     }
-
-    return physicalResource;
 }
 
 function getAccountId() {
